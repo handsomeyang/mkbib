@@ -1,0 +1,14 @@
+article,journal
+book,publisher
+booklet,
+conference,booktitle
+inbook,title
+incollection,booktitle
+inproceedings,booktitle
+manual,
+mastersthesis,school
+misc,publisher
+phdthesis,school
+proceedings,title
+techreport,institution
+unpublished,
