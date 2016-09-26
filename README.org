@@ -1,0 +1,15 @@
+* What is it?
+  =mkbib.py= is a Python script for generating normalized and helm-bibtex aware =.bib= files.
+
+* How to use it?
+** Prerequisites
+   =mkbib.py= depends on =nltk=, =scikit-learn=, =pybtex= and =ordered_set=. They can be installed via
+   #+BEGIN_SRC sh
+   pip install nltk scikit-learn pybtex ordered_set
+   #+END_SRC
+
+
+
+# Local Variables:
+# eval: (toggle-truncate-lines)
+# End:    
