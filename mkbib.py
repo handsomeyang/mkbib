@@ -113,7 +113,7 @@ pdf_paths = glob.glob(os.path.join(args[0], '*.pdf'))
 pdf_names = [os.path.basename(s) for s in pdf_paths]
 pdf_names = [s[s.find(')')+1:s.find('.pdf')] for s in pdf_names]
 pdf_names_tokens = [set(tokenize(s)) for s in pdf_names]
-tmp=[]
+
 new_bib_data = BibliographyData()
 for k, v in bib_data.entries.items():
     if book_fields[v.type] in v.fields.keys():
@@ -140,7 +140,7 @@ for k, v in bib_data.entries.items():
             book_name_acronym = acronym(book_name_tokens)
     else:
         book_name_acronym = ''
-    tmp.append(book_name_acronym)
+
     if 'year' in v.fields.keys():
         book_name_acronym += v.fields['year'][2:4]
 
@@ -166,4 +166,3 @@ for k, v in bib_data.entries.items():
 new_bib_data.to_file(os.path.split(os.getcwd())[1]+'.bib', 'bibtex')
 
 os.remove('tmp.bib')
-print set(tmp)
