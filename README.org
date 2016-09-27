@@ -52,7 +52,8 @@
 
   7. In the =LaTeX= file or the notes file, =M-x helm-bibtex= and enjoy!
      
-* Screenshots     
+* Screenshots
+  [[./screenshot.png]]
      
 # Local Variables:
 # eval: (toggle-truncate-lines)
