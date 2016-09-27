@@ -48,6 +48,10 @@
                                                                      bibtex-completion-library-path
                                                                      bibtex-completion-notes-path))))
      #+END_SRC
+     Remember to tell =helm-bibtex= to use the =file= field:
+     #+BEGIN_SRC emacs-lisp
+     (setq bibtex-completion-pdf-field "file")
+     #+END_SRC
      You can also manage references from the corresponding notes file by similarly setting local =helm-bibtex= variables as above.
 
   7. In the =LaTeX= file or the notes file, =M-x helm-bibtex= and enjoy!
@@ -57,4 +61,4 @@
      
 # Local Variables:
 # eval: (toggle-truncate-lines)
-# End:    
+# End:
