@@ -6,15 +6,7 @@ import nltk
 from sklearn.feature_extraction.text import CountVectorizer
 from pybtex.database import parse_file, BibliographyData
 from ordered_set import OrderedSet
-
-wnl = nltk.WordNetLemmatizer()
-
-vectorizer = CountVectorizer(stop_words='english')
-analyzer = vectorizer.build_analyzer()
-
-pattern = re.compile(r"[\(\{](.+?)[\)\}]")
-
-match_thresh = 0.75
+from inspect import getsourcefile
 
 def lemmatize_list(sl):
     lsl = [wnl.lemmatize(s) for s in sl]
@@ -24,26 +16,6 @@ def lemmatize_string(s):
     sl = s.split()
     lsl = lemmatize_list(sl)
     return ' '.join(lsl)
-
-book_fields = {}
-acronym_dict = {}
-known_acronyms = set()
-dumb_words = set()
-
-with open('book_fields.csv', 'rb') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        book_fields[row[0].lower()] = row[1].lower()
-
-with open('known_acronyms.csv', 'rb') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        known_acronyms.add(row[0].lower())
-
-with open('dumb_words.csv', 'rb') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        dumb_words.add(wnl.lemmatize(row[0].lower()))
 
 def tokenize(name):
     tokens = OrderedSet(analyzer(name)).items
@@ -58,11 +30,6 @@ def tokenize(name):
             i += 1
 
     return tokens
-
-with open('acronym_dict.csv', 'rb') as f:
-    reader = csv.reader(f)
-    for row in reader:
-        acronym_dict[' '.join(tokenize(row[0].lower()))] = row[1].lower()
 
 def acronym(ts):
     if 1 == len(ts):
@@ -88,6 +55,42 @@ def query_acronym_dict(ts):
 def usage():
     print 'Usage: python %s PATH' % (sys.argv[0])
     print 'Normalize and generate helm-bibtex aware .bib file.\n'
+
+wnl = nltk.WordNetLemmatizer()
+
+vectorizer = CountVectorizer(stop_words='english')
+analyzer = vectorizer.build_analyzer()
+
+pattern = re.compile(r"[\(\{](.+?)[\)\}]")
+
+match_thresh = 0.75
+
+dir_name  = os.path.dirname(getsourcefile(lambda:0))
+
+book_fields = {}
+acronym_dict = {}
+known_acronyms = set()
+dumb_words = set()
+
+with open(os.path.join(dir_name, 'book_fields.csv'), 'rb') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        book_fields[row[0].lower()] = row[1].lower()
+
+with open(os.path.join(dir_name, 'known_acronyms.csv'), 'rb') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        known_acronyms.add(row[0].lower())
+
+with open(os.path.join(dir_name, 'dumb_words.csv'), 'rb') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        dumb_words.add(wnl.lemmatize(row[0].lower()))
+
+with open(os.path.join(dir_name, 'acronym_dict.csv'), 'rb') as f:
+    reader = csv.reader(f)
+    for row in reader:
+        acronym_dict[' '.join(tokenize(row[0].lower()))] = row[1].lower()
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], "")
@@ -163,6 +166,6 @@ for k, v in bib_data.entries.items():
 
     new_bib_data.entries[new_key] = v
 
-new_bib_data.to_file(os.path.split(os.getcwd())[1]+'.bib', 'bibtex')
+new_bib_data.to_file('_'.join(os.path.split(os.getcwd())[1].split())+'.bib', 'bibtex')
 
 os.remove('tmp.bib')

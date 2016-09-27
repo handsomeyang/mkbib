@@ -1,10 +1,10 @@
 #+STARTUP: showall
 
 * What is it
-  =mkbib.py= is a Python script for generating normalized and [[https://github.com/tmalsburg/helm-bibtex][helm-bibtex]] aware =.bib= files. Specifically, it aggregates individual =.bib= files into a single one, generates normalized keys for the BibTeX entries according to a sensible format, and inserts =file= fields for entries with the corresponding =.pdf= available.
+  =mkbib= is a Python script and tools for generating normalized and [[https://github.com/tmalsburg/helm-bibtex][helm-bibtex]] aware =.bib= files. Specifically, it aggregates individual =.bib= files into a single one, generates normalized keys for the =BibTeX= entries according to a sensible format, and inserts =file= fields for entries with the corresponding =.pdf= available.
 
 * Prerequisites
-  =mkbib.py= depends on =NLTK=, =scikit-learn=, =Pybtex= and =ordered_set=. They can be installed via:
+  =mkbib= depends on =NLTK=, =scikit-learn=, =Pybtex= and =ordered_set=. They can be installed via:
   #+BEGIN_SRC sh
   pip install nltk scikit-learn pybtex ordered_set
   #+END_SRC
@@ -15,22 +15,44 @@
   #+END_SRC
 
 * The recommended =helm-bibtex= work flow
-  1. Prepare auxiliary files for your research domain. The provided files in the repository are examples for the field of /Computer Vision and Pattern Recognition/.
-     - =known_acronyms.csv= A list of known acronyms of journal/conference names. One per line.
-     - =acronym_dict.csv= A list of key-value pairs where a key is the canonical name (preferably tokenized, but it does not matter) of a journal/conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
-     - =dumb_words.csv= A list of words to be discarded before generating the acronym.
+  1. Download the =mkbib= repository into =PATH_TO_MKBIB=.
+  2. Prepare auxiliary files for your research domain. The provided files in the repository are examples for the field of /Computer Vision and Pattern Recognition/.
+     - =known_acronyms.csv=: A list of known acronyms of journal/conference names. One per line.
+     - =acronym_dict.csv=: A list of key-value pairs where a key is the canonical name (preferably tokenized, but it does not matter) of a journal/conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
+     - =dumb_words.csv=: A list of words to be discarded before generating the acronym.
        
-  2. Make a directory =TOPIC_DIR= for your research topic.
+  3. Make a directory =TOPIC_DIR= for your research topic.
 
-  3. Collect relevant =.bib= and =.pdf= files in =TOPIC_DIR=. Name the =.pdf= files in the format =(YEAR ACRONYM)PAPER_TITLE.pdf=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=. This naming scheme has several advantages over other schemes (such as =BIBTEX_ENTRY_KEY.pdf=):
+  4. Collect relevant =.bib= and =.pdf= files in =TOPIC_DIR=. Name the =.pdf= files in the format =(YEAR ACRONYM)PAPER_TITLE.pdf=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=. This naming scheme has several advantages over other schemes (such as =BIBTEX_ENTRY_KEY.pdf=):
      - The name carries key information of the publication, and you can quickly identify/verify the file you are looking for at a glance without resorting to helm-bibtex (Imagine looking for a particular paper using some file manager in a folder full of files like =990517.pdf=!). 
      - When sorting by name in a file manager, the =.pdf= files will first be sorted by year, then by journal/conference name, and finally the title of the paper. It gives you a concise chronological overview of your research field.
-     - It facilitates the filling of the =file= field of the BibTeX entries by cross referencing the =.pdf= file name with the =title= field. Publication databases use different naming schemes for a =.bib= file and the associated =.pdf= file, sometimes it is difficult to correspond =.bib= and =.pdf= files coming from the same database, not to mention files from different sources. Some help from our side is hugely helpful.
+     - It facilitates the filling of the =file= field of the =BibTeX= entries by cross referencing the =.pdf= file name with the =title= field. Publication databases use different naming schemes for a =.bib= file and the associated =.pdf= file, sometimes it is difficult to correspond =.bib= and =.pdf= files coming from the same database, not to mention files from different sources. Some help from our side is hugely helpful.
    
-  4. Run:
+  5. Run:
      #+BEGIN_SRC sh
-     python PATH_TO_MKBIB_PY TOPIC_DIR
+     python PATH_TO_MKBIB/mkbib.py TOPIC_DIR
      #+END_SRC
+     A =.bib= file in the name of =TOPIC_DIR= will be created in =TOPIC_DIR=. The keys of the =BibTeX= entries therein are normalized in the format =ACRONYM+YEAR_CODE/LAST_NAME_FIRST_AUTHOR+LAST_NAME_INITIAL_SECOND_AUTHOR+...=, e.g. =cvpr01/ViolaJ=. The =file= fields are populated with the absolute paths of the corresponding =.pdf= files.
+     
+  6. In the referencing =LaTeX= file, set relevant =helm-bibtex= variables by putting the following at the end:
+     #+BEGIN_SRC emacs-lisp
+     %%% Local Variables: 
+     %%% eval: (setq bibtex-completion-bibliography '("PATH_TO_GENERATED_BIB_FILE"))
+     %%% eval: (setq bibtex-completion-library-path '("TOPIC_DIR"))
+     %%% eval: (setq bibtex-completion-notes-path "PATH_TO_CORRESPONDING_NOTES_FILE")
+     %%% end: 
+     #+END_SRC
+     In your =.emacs= file, enable localizing and setting =helm-bibtex= variables:
+     #+BEGIN_SRC emacs-lisp
+       (put 'setq 'safe-local-eval-function (lambda (x) (memq (nth 1 x) '(bibtex-completion-bibliography
+                                                                     bibtex-completion-library-path
+                                                                     bibtex-completion-notes-path))))
+     #+END_SRC
+     You can also manage references from the corresponding notes file by similarly setting local =helm-bibtex= variables as above.
+
+  7. In the =LaTeX= file or the notes file, =M-x helm-bibtex= and enjoy!
+     
+* Screenshots     
      
 # Local Variables:
 # eval: (toggle-truncate-lines)
