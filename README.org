@@ -28,7 +28,7 @@
      - When sorting by name in a file manager, the =.pdf= files will first be sorted by year, then by journal/conference name, and finally the title of the paper. It gives you a concise chronological overview of your research field.
      - It facilitates the filling of the =file= field of the =BibTeX= entries by cross referencing the =.pdf= file name with the =title= field. Publication databases use different naming schemes for a =.bib= file and the associated =.pdf= file, sometimes it is difficult to correspond =.bib= and =.pdf= files coming from the same database, not to mention files from different sources. Some help from our side is hugely helpful.
    
-  5. Run:
+  5. In a shell prompt, run:
      #+BEGIN_SRC sh
      python PATH_TO_MKBIB/mkbib.py TOPIC_DIR
      #+END_SRC
