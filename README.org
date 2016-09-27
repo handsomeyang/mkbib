@@ -1,14 +1,29 @@
-* What is it?
-  =mkbib.py= is a Python script for generating normalized and helm-bibtex aware =.bib= files.
+#+STARTUP: showall
 
-* How to use it?
-** Prerequisites
-   =mkbib.py= depends on =nltk=, =scikit-learn=, =pybtex= and =ordered_set=. They can be installed via
-   #+BEGIN_SRC sh
-   pip install nltk scikit-learn pybtex ordered_set
-   #+END_SRC
+* What is it
+  =mkbib.py= is a Python script for generating normalized and [[https://github.com/tmalsburg/helm-bibtex][helm-bibtex]] aware =.bib= files. Specifically, it aggregates individual =.bib= files into a single one, generates normalized keys for the BibTex entries according to a sensible format, and inserts =file= fields for entries with the corresponding =PDF= available.
 
+* Prerequisites
+  =mkbib.py= depends on =NLTK=, =scikit-learn=, =Pybtex= and =ordered_set=. They can be installed via
+  #+BEGIN_SRC sh
+  pip install nltk scikit-learn pybtex ordered_set
+  #+END_SRC
 
+  Download the =WordNet= corpus for =NLTK= via
+  #+BEGIN_SRC sh
+  python -m nltk.downloader wordnet
+  #+END_SRC
+
+* The recommended =helm-bibtex= work flow
+  1. Prepare auxiliary files for your research domain. The provided files in the repository are examples for the field of /Computer Vision and Pattern Recognition/.
+     - =known_acronyms.csv= A list of known acronyms of journal and conference names. One per line.
+     - =acronym_dict.csv= A list of key-value pairs where a key is the canonical name (preferably tokenized, but it doesn't matter) of a journal or conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
+     - =dumb_words.csv= A list of words to be discarded before generating the acronym.
+       
+  2. Make a directory =TOPIC_DIR= for your research topic.
+
+  3. Collect relevant =.bib= and PDF files in =TOPIC_DIR=. Name the PDF files in the format =(YEAR ACRONYM)PAPER_TITLE=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=.
+   
 
 # Local Variables:
 # eval: (toggle-truncate-lines)
