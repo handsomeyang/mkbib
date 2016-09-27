@@ -24,7 +24,7 @@
   3. Make a directory =TOPIC_DIR= for your research topic.
 
   4. Collect relevant =.bib= and =.pdf= files in =TOPIC_DIR=. Name the =.pdf= files in the format =(YEAR ACRONYM)PAPER_TITLE.pdf=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=. This naming scheme has several advantages over other schemes (such as =BIBTEX_ENTRY_KEY.pdf=):
-     - The name carries key information of the publication, and you can quickly identify/verify the file you are looking for at a glance without resorting to helm-bibtex (Imagine looking for a particular paper using some file manager in a folder full of files like =990517.pdf=!). 
+     - The name carries key information of the publication, so you can quickly identify/verify the file you are looking for at a glance without resorting to helm-bibtex (Imagine looking for a particular paper using some file manager in a folder full of files like =990517.pdf=!). 
      - When sorting by name in a file manager, the =.pdf= files will first be sorted by year, then by journal/conference name, and finally the title of the paper. It gives you a concise chronological overview of your research field.
      - It facilitates the filling of the =file= field of the =BibTeX= entries by cross referencing the =.pdf= file name with the =title= field. Different publication databases use different naming schemes, sometimes it is difficult to correspond =.bib= and =.pdf= files coming from the same database, not to mention files from different sources. Some help from our side is hugely helpful.
    
