@@ -1,30 +1,37 @@
 #+STARTUP: showall
 
 * What is it
-  =mkbib.py= is a Python script for generating normalized and [[https://github.com/tmalsburg/helm-bibtex][helm-bibtex]] aware =.bib= files. Specifically, it aggregates individual =.bib= files into a single one, generates normalized keys for the BibTex entries according to a sensible format, and inserts =file= fields for entries with the corresponding =PDF= available.
+  =mkbib.py= is a Python script for generating normalized and [[https://github.com/tmalsburg/helm-bibtex][helm-bibtex]] aware =.bib= files. Specifically, it aggregates individual =.bib= files into a single one, generates normalized keys for the BibTeX entries according to a sensible format, and inserts =file= fields for entries with the corresponding =.pdf= available.
 
 * Prerequisites
-  =mkbib.py= depends on =NLTK=, =scikit-learn=, =Pybtex= and =ordered_set=. They can be installed via
+  =mkbib.py= depends on =NLTK=, =scikit-learn=, =Pybtex= and =ordered_set=. They can be installed via:
   #+BEGIN_SRC sh
   pip install nltk scikit-learn pybtex ordered_set
   #+END_SRC
 
-  Download the =WordNet= corpus for =NLTK= via
+  Download the =WordNet= corpus for =NLTK=:
   #+BEGIN_SRC sh
   python -m nltk.downloader wordnet
   #+END_SRC
 
 * The recommended =helm-bibtex= work flow
   1. Prepare auxiliary files for your research domain. The provided files in the repository are examples for the field of /Computer Vision and Pattern Recognition/.
-     - =known_acronyms.csv= A list of known acronyms of journal and conference names. One per line.
-     - =acronym_dict.csv= A list of key-value pairs where a key is the canonical name (preferably tokenized, but it doesn't matter) of a journal or conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
+     - =known_acronyms.csv= A list of known acronyms of journal/conference names. One per line.
+     - =acronym_dict.csv= A list of key-value pairs where a key is the canonical name (preferably tokenized, but it does not matter) of a journal/conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
      - =dumb_words.csv= A list of words to be discarded before generating the acronym.
        
   2. Make a directory =TOPIC_DIR= for your research topic.
 
-  3. Collect relevant =.bib= and PDF files in =TOPIC_DIR=. Name the PDF files in the format =(YEAR ACRONYM)PAPER_TITLE=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=.
+  3. Collect relevant =.bib= and =.pdf= files in =TOPIC_DIR=. Name the =.pdf= files in the format =(YEAR ACRONYM)PAPER_TITLE.pdf=, e.g. =(2001 CVPR)Rapid Object Detection using a Boosted Cascade of Simple Features.pdf=. This naming scheme has several advantages over other schemes (such as =BIBTEX_ENTRY_KEY.pdf=):
+     - The name carries key information of the publication, and you can quickly identify/verify the file you are looking for at a glance without resorting to helm-bibtex (Imagine looking for a particular paper using some file manager in a folder full of files like =990517.pdf=!). 
+     - When sorting by name in a file manager, the =.pdf= files will first be sorted by year, then by journal/conference name, and finally the title of the paper. It gives you a concise chronological overview of your research field.
+     - It facilitates the filling of the =file= field of the BibTeX entries by cross referencing the =.pdf= file name with the =title= field. Publication databases use different naming schemes for a =.bib= file and the associated =.pdf= file, sometimes it is difficult to correspond =.bib= and =.pdf= files coming from the same database, not to mention files from different sources. Some help from our side is hugely helpful.
    
-
+  4. Run:
+     #+BEGIN_SRC sh
+     python PATH_TO_MKBIB_PY TOPIC_DIR
+     #+END_SRC
+     
 # Local Variables:
 # eval: (toggle-truncate-lines)
 # End:    
