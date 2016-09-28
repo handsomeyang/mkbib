@@ -19,7 +19,7 @@
   2. Prepare auxiliary files for your research domain. The provided files in the repository are examples for the field of /Computer Vision and Pattern Recognition/.
      - =known_acronyms.csv=: A list of known acronyms of journal/conference names. One per line.
      - =acronym_dict.csv=: A list of key-value pairs where a key is the canonical name (preferably tokenized, but it does not matter) of a journal/conference and the value is the corresponding acronym. One pair per line, and make sure there is no space before and after the comma. For similar names, put more specific ones before less specific ones, e.g., put =international conference computer vision workshops,iccvw= before =international conference computer vision,iccv=. 
-     - =dumb_words.csv=: A list of words to be discarded before generating the acronym.
+     - =dumb_words.csv=: A list of words to be discarded before generating the acronym. One per line.
        
   3. Make a directory =TOPIC_DIR= for your research topic.
 
