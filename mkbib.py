@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
-import subprocess, glob, os.path, sys, getopt
+import subprocess
+import glob
+import os.path
+import sys
+import getopt
+import string
 import re
 import csv
-import string
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
 from pybtex.database import parse_file, BibliographyData
